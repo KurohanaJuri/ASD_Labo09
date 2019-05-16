@@ -206,7 +206,15 @@ private:
     static bool contains(Node* r, const_reference key) noexcept {
         /* ... */
         //Todo contains
-        return false;
+        if(r == nullptr){
+            return false;
+        } else if(key < r->key){
+            contains(r->left, key);
+        } else if(key > r->key){
+            contains(r->right, key);
+        } else { // R.key = key
+            return true;
+        }
     }
 
 public:
@@ -222,6 +230,7 @@ public:
     const_reference min() const {
         /* ... */
         //Todo min
+
     }
 
     //
@@ -267,6 +276,29 @@ private:
     static bool deleteElement(Node*& r, const_reference key) noexcept {
         /* ... */
         //Todo deleteElement
+        if(r == nullptr){
+            return false;
+        }
+
+        if(key < r->key){
+            deleteElement(r->left,key);
+        } else if( key > r->key){
+            deleteElement(r->right, key);
+        } else { //found
+            if(r->right == nullptr){
+                Node* temp = r;
+                r = r->left;
+                delete(temp);
+                return true;
+            } else if(r->left == nullptr){
+                Node* temp = r;
+                r = r->right;
+                delete(temp);
+                return true;
+            } else{
+                //Node* m = new Node(min());
+            }
+        }
         return false;
     }
 
