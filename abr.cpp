@@ -243,6 +243,9 @@ public:
     void deleteMin() {
         /* ... */
         //Todo deleteMin
+        const value_type minKey = min();
+        deleteElement(minKey);
+
     }
 
 
