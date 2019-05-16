@@ -15,7 +15,7 @@
 
 using namespace std;
 
-template < typename T >
+template<typename T>
 class BinarySearchTree {
 public:
 
@@ -37,14 +37,15 @@ private:
         // ce noeud est la racine
 
         Node(const_reference key)  // seul constructeur disponible. key est obligatoire
-                : key(key), right(nullptr), left(nullptr), nbElements(1)
-        {
+                : key(key), right(nullptr), left(nullptr), nbElements(1) {
             cout << "(C" << key << ") ";
         }
+
         ~Node()               // destructeur
         {
             cout << "(D" << key << ") ";
         }
+
         Node() = delete;             // pas de construction par défaut
         Node(const Node&) = delete;  // pas de construction par copie
         Node(Node&&) = delete;       // pas de construction par déplacement
@@ -59,8 +60,8 @@ public:
     /**
      *  @brief Constructeur par défaut. Construit un arbre vide
      */
-    BinarySearchTree() : _root(nullptr)
-    {
+    BinarySearchTree() : _root(nullptr) {
+        //Todo Default constuctor
         /* ... */
     }
 
@@ -70,7 +71,7 @@ public:
      *  @param other le BinarySearchTree à copier
      *
      */
-    BinarySearchTree( BinarySearchTree& other ) {
+    BinarySearchTree(BinarySearchTree& other) {
         /* ... */
     }
 
@@ -80,7 +81,7 @@ public:
      *  @param other le BinarySearchTree à copier
      *
      */
-    BinarySearchTree& operator= ( const BinarySearchTree& other ) {
+    BinarySearchTree& operator=(const BinarySearchTree& other) {
         /* ... */
         return *this;
     }
@@ -91,7 +92,7 @@ public:
      *  @param other le BST avec lequel on echange le contenu
      *
      */
-    void swap(BinarySearchTree& other ) noexcept {
+    void swap(BinarySearchTree& other) noexcept {
         /* ... */
     }
 
@@ -101,7 +102,7 @@ public:
      *  @param other le BST dont on vole le contenu
      *
      */
-    BinarySearchTree( BinarySearchTree&& other ) noexcept {
+    BinarySearchTree(BinarySearchTree&& other) noexcept {
         /* ... */
     }
 
@@ -111,7 +112,7 @@ public:
      *  @param other le BST dont on vole le contenu
      *
      */
-    BinarySearchTree& operator= ( BinarySearchTree&& other ) noexcept {
+    BinarySearchTree& operator=(BinarySearchTree&& other) noexcept {
         /* ... */
         return *this;
     }
@@ -123,7 +124,7 @@ public:
     // récursive privée deleteSubTree(Node*)
     //
     ~BinarySearchTree() {
-        deleteSubTree( _root );
+        deleteSubTree(_root);
     }
 
 private:
@@ -134,6 +135,7 @@ private:
     //          peut éventuellement valoir nullptr
     //
     static void deleteSubTree(Node* r) noexcept {
+        //Todo deleteSubTree
         /* ... */
     }
 
@@ -146,8 +148,8 @@ public:
     // Ne pas modifier mais écrire la fonction
     // récursive privée insert(Node*&,const_reference)
     //
-    void insert( const_reference key) {
-        insert(_root,key);
+    void insert(const_reference key) {
+        insert(_root, key);
     }
 
 private:
@@ -165,8 +167,16 @@ private:
     // la fonction peut modifier x, reçu par référence, si nécessaire
     //
     static bool insert(Node*& r, const_reference key) {
-        /* ... */
-        return false;
+        if (r == nullptr) {
+            r = new Node{key};
+            return true;
+        } else if (key < r->key) {
+            insert(r->left, key);
+        } else if(key > r->key){
+            insert(r->right, key);
+        } else{
+            return false;
+        }
     }
 
 public:
@@ -180,8 +190,8 @@ public:
     // Ne pas modifier mais écrire la fonction
     // récursive privée contains(Node*,const_reference)
     //
-    bool contains( const_reference key ) const noexcept {
-        return contains(_root,key);
+    bool contains(const_reference key) const noexcept {
+        return contains(_root, key);
     }
 
 private:
@@ -195,6 +205,7 @@ private:
     //
     static bool contains(Node* r, const_reference key) noexcept {
         /* ... */
+        //Todo contains
         return false;
     }
 
@@ -210,6 +221,7 @@ public:
     //
     const_reference min() const {
         /* ... */
+        //Todo min
     }
 
     //
@@ -221,6 +233,7 @@ public:
     //
     void deleteMin() {
         /* ... */
+        //Todo deleteMin
     }
 
 
@@ -236,8 +249,8 @@ public:
     // Ne pas modifier mais écrire la fonction
     // récursive privée deleteElement(Node*&,const_reference)
     //
-    bool deleteElement( const_reference key) noexcept {
-        return deleteElement( _root, key );
+    bool deleteElement(const_reference key) noexcept {
+        return deleteElement(_root, key);
     }
 
 private:
@@ -251,8 +264,9 @@ private:
     // l'arbre mais retourne false. Si l'element est present, elle
     // retourne vrai
     //
-    static bool deleteElement( Node*& r, const_reference key) noexcept {
+    static bool deleteElement(Node*& r, const_reference key) noexcept {
         /* ... */
+        //Todo deleteElement
         return false;
     }
 
@@ -280,7 +294,7 @@ public:
     //
     const_reference nth_element(size_t n) const {
         /* ... */
-        return nth_element(_root,n);
+        return nth_element(_root, n);
     }
 
 private:
@@ -311,7 +325,7 @@ public:
     // récursive privée rank(Node*,const_reference)
     //
     size_t rank(const_reference key) const noexcept {
-        return rank(_root,key);
+        return rank(_root, key);
     }
 
 private:
@@ -344,7 +358,7 @@ public:
     void linearize() noexcept {
         size_t cnt = 0;
         Node* list = nullptr;
-        linearize(_root,list,cnt);
+        linearize(_root, list, cnt);
         _root = list;
     }
 
@@ -377,8 +391,8 @@ public:
     void balance() noexcept {
         size_t cnt = 0;
         Node* list = nullptr;
-        linearize(_root,list,cnt);
-        arborize(_root,list,cnt);
+        linearize(_root, list, cnt);
+        arborize(_root, list, cnt);
     }
 
 private:
@@ -405,8 +419,9 @@ public:
     //          en parametre. Pour le noeud n courrant, l'appel sera
     //          f(n->key);
     //
-    template < typename Fn >
-    void visitPre (Fn f) {
+    template<typename Fn>
+    void visitPre(Fn f) {
+        //Todo visitPre
         /* ... */
     }
 
@@ -417,8 +432,9 @@ public:
     //          en parametre. Pour le noeud n courrant, l'appel sera
     //          f(n->key);
     //
-    template < typename Fn >
-    void visitSym (Fn f) {
+    template<typename Fn>
+    void visitSym(Fn f) {
+        //Todo visitSym
         /* ... */
     }
 
@@ -429,8 +445,9 @@ public:
     //          en parametre. Pour le noeud n courrant, l'appel sera
     //          f(n->key);
     //
-    template < typename Fn >
-    void visitPost (Fn f) {
+    template<typename Fn>
+    void visitPost(Fn f) {
+        //Todo visitPost
         /* ... */
     }
 
@@ -447,19 +464,24 @@ public:
         string l1, l2;
 
         size_t W = 11;
-        while( getline(ss3,l1) )
+        while (getline(ss3, l1))
             if (l1.length() > W) W = l1.length();
 
         displayKeys(ss1);
 
         cout << "\n";
-        cout << "+-" << left << setfill('-') << setw(W) << "-" << "+-" << setw(W) << "-" << setfill(' ') << "+" << endl;
-        cout << "| "<< left << setw(W) << "key" << "| " << setw(W) << "nbElements" << "|" << endl;
-        cout << "+-" << left << setfill('-') << setw(W) << "-" << "+-" << setw(W) << "-" << setfill(' ') << "+" << endl;
-        while( getline(ss1,l1) and getline(ss2, l2) ) {
-            cout << "| "<< left << setw(W) << l1 << "| " << setw(W) << l2 << "|" << endl;
+        cout << "+-" << left << setfill('-') << setw(W) << "-" << "+-" << setw(W)
+             << "-" << setfill(' ') << "+" << endl;
+        cout << "| " << left << setw(W) << "key" << "| " << setw(W) << "nbElements"
+             << "|" << endl;
+        cout << "+-" << left << setfill('-') << setw(W) << "-" << "+-" << setw(W)
+             << "-" << setfill(' ') << "+" << endl;
+        while (getline(ss1, l1) and getline(ss2, l2)) {
+            cout << "| " << left << setw(W) << l1 << "| " << setw(W) << l2 << "|"
+                 << endl;
         }
-        cout << "+-" << left << setfill('-') << setw(W) << "-" << "+-" << setw(W) << "-" << setfill(' ') << "+" << endl;
+        cout << "+-" << left << setfill('-') << setw(W) << "-" << "+-" << setw(W)
+             << "-" << setfill(' ') << "+" << endl;
 
     }
 
@@ -476,8 +498,8 @@ public:
     // un noeud sentinelle newLevel qui traque les
     // changements de niveaux
     //
-    template <typename Fn>
-    void display (Fn func, ostream& os = cout ) const {
+    template<typename Fn>
+    void display(Fn func, ostream& os = cout) const {
         Node* newLevel = (Node*) -1;
         // addresse non nulle dont on est sur qu'elle ne contient pas
         // vraiment un Node. Utilisée comme sentinelle.
@@ -486,15 +508,15 @@ public:
         Q.push(_root);
         Q.push(newLevel);
 
-        while(!Q.empty()) {
+        while (!Q.empty()) {
             Node* cur = Q.front();
             Q.pop();
 
-            if(cur == newLevel) {
+            if (cur == newLevel) {
                 os << endl;
-                if(!Q.empty())
+                if (!Q.empty())
                     Q.push(newLevel);
-            } else if(cur == nullptr) {
+            } else if (cur == nullptr) {
                 os << "- ";
             } else {
                 os << func(cur) << " ";
