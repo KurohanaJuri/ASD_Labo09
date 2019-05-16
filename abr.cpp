@@ -204,8 +204,6 @@ private:
     // @return vrai si la cle trouvee, faux sinon.
     //
     static bool contains(Node* r, const_reference key) noexcept {
-        /* ... */
-        //Todo contains
         if(r == nullptr){
             return false;
         } else if(key < r->key){
@@ -228,9 +226,11 @@ public:
     // vous pouvez mettre en oeuvre de manière iterative ou recursive a choix
     //
     const_reference min() const {
-        /* ... */
-        //Todo min
-
+        Node* temp = _root;
+        while(temp->left != nullptr){
+            temp = temp->left;
+        }
+        return temp->key;
     }
 
     //
