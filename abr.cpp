@@ -124,7 +124,7 @@ public:
     // récursive privée deleteSubTree(Node*)
     //
     ~BinarySearchTree() {
-        deleteSubTree(_root);
+        //TODo
     }
 
 private:
@@ -137,6 +137,7 @@ private:
     static void deleteSubTree(Node* r) noexcept {
         //Todo deleteSubTree
         /* ... */
+
     }
 
 public:
@@ -172,11 +173,12 @@ private:
             return true;
         } else if (key < r->key) {
             insert(r->left, key);
-        } else if(key > r->key){
+        } else if (key > r->key) {
             insert(r->right, key);
-        } else{
+        } else {
             return false;
         }
+        return false;
     }
 
 public:
@@ -204,11 +206,11 @@ private:
     // @return vrai si la cle trouvee, faux sinon.
     //
     static bool contains(Node* r, const_reference key) noexcept {
-        if(r == nullptr){
+        if (r == nullptr) {
             return false;
-        } else if(key < r->key){
+        } else if (key < r->key) {
             contains(r->left, key);
-        } else if(key > r->key){
+        } else if (key > r->key) {
             contains(r->right, key);
         } else { // R.key = key
             return true;
@@ -227,7 +229,7 @@ public:
     //
     const_reference min() const {
         Node* temp = _root;
-        while(temp->left != nullptr){
+        while (temp->left != nullptr) {
             temp = temp->left;
         }
         return temp->key;
@@ -241,11 +243,8 @@ public:
     // vous pouvez mettre en oeuvre de manière iterative ou recursive a choix
     //
     void deleteMin() {
-        /* ... */
-        //Todo deleteMin
         const value_type minKey = min();
         deleteElement(minKey);
-
     }
 
 
@@ -279,27 +278,34 @@ private:
     static bool deleteElement(Node*& r, const_reference key) noexcept {
         /* ... */
         //Todo deleteElement
-        if(r == nullptr){
+        if (r == nullptr) {
             return false;
         }
 
-        if(key < r->key){
-            deleteElement(r->left,key);
-        } else if( key > r->key){
+        if (key < r->key) {
+            deleteElement(r->left, key);
+        } else if (key > r->key) {
             deleteElement(r->right, key);
         } else { //found
-            if(r->right == nullptr){
+            if (r->right == nullptr) {
                 Node* temp = r;
                 r = r->left;
-                delete(temp);
+                delete (temp);
                 return true;
-            } else if(r->left == nullptr){
+            } else if (r->left == nullptr) {
                 Node* temp = r;
                 r = r->right;
+                delete (temp);
+                return true;
+            } else {
+
+                Node* temp = r->right;
+                while (temp->left != nullptr) {
+                    temp = temp->left;
+                }
+                swap(this, temp);
                 delete(temp);
                 return true;
-            } else{
-                //Node* m = new Node(min());
             }
         }
         return false;
@@ -458,6 +464,7 @@ public:
     void visitPre(Fn f) {
         //Todo visitPre
         /* ... */
+
     }
 
     //
@@ -469,8 +476,18 @@ public:
     //
     template<typename Fn>
     void visitSym(Fn f) {
-        //Todo visitSym
-        /* ... */
+        queue<Node*> q;
+        q.push(_root);
+
+        while(!q.empty()){
+            Node* n = q.front();
+            q.pop();
+            if(n != nullptr){
+                f(n->key);
+                q.push(n->left);
+                q.push(n->right);
+            }
+        }
     }
 
     //
