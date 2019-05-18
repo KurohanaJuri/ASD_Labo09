@@ -138,6 +138,11 @@ private:
         //Todo deleteSubTree
         /* ... */
 
+        if (r != nullptr) {
+            deleteSubTree(r->left);
+            deleteSubTree(r->right);
+        }
+        delete (r);
     }
 
 public:
@@ -298,13 +303,22 @@ private:
                 delete (temp);
                 return true;
             } else {
+//                Node* subTreeMin = r->right;
+//                while (subTreeMin->left != nullptr) {
+//                    subTreeMin = subTreeMin->left;
+//                }
+//
+//                std::swap(r, subTreeMin);
+//
+//                std::swap(r->left, subTreeMin->left);
+//                std::swap(r->right, subTreeMin->right);
+//
+//
+//                //std::swap(r->left, subTreeMin->left);
+//
+//
+//                delete (subTreeMin);
 
-                Node* temp = r->right;
-                while (temp->left != nullptr) {
-                    temp = temp->left;
-                }
-                swap(this, temp);
-                delete(temp);
                 return true;
             }
         }
@@ -462,9 +476,23 @@ public:
     //
     template<typename Fn>
     void visitPre(Fn f) {
-        //Todo visitPre
-        /* ... */
+        deque<Node*> d;
+        Node* curr = _root;
+        if(curr->right) {
+            d.push_back(curr->right);
+        }
+        do {
+            while (curr != nullptr) {
+                f(curr->key);
+                if (curr->right) {
+                    d.push_back(curr->right);
+                }
+                curr = curr->left;
+            }
+            curr = d.back();
+            d.pop_back();
 
+        } while (!d.empty());
     }
 
     //
@@ -479,10 +507,10 @@ public:
         queue<Node*> q;
         q.push(_root);
 
-        while(!q.empty()){
+        while (!q.empty()) {
             Node* n = q.front();
             q.pop();
-            if(n != nullptr){
+            if (n != nullptr) {
                 f(n->key);
                 q.push(n->left);
                 q.push(n->right);
@@ -501,6 +529,31 @@ public:
     void visitPost(Fn f) {
         //Todo visitPost
         /* ... */
+
+//        deque<Node*> nodeDeque;
+//        nodeDeque.push_back(_root);
+//
+//        Node* nodeCheck = _root;
+//
+//        while (!nodeDeque.empty()) {
+//            while (nodeCheck->left != nullptr) {
+//                nodeDeque.push_back(nodeCheck->left);
+//                nodeCheck = nodeCheck->left;
+//            }
+//
+//            Node* currentNode = nodeDeque.back();
+//            nodeDeque.pop_back();
+//
+//            if (currentNode->right != nullptr) {
+//                nodeDeque.push_back(currentNode);
+//                nodeDeque.push_back(currentNode->right);
+//                nodeCheck = currentNode->right;
+//            } else {
+//                f(currentNode->key);
+//                nodeCheck->left = nullptr;
+//            }
+//
+//        }
     }
 
 
