@@ -33,7 +33,7 @@ int main(){
 
     test.deleteElement(10);
 
-    test.visitPre([](int value){
+    test.visitPost([](int value){
         cout << value << " ";
     });
     //test.display();

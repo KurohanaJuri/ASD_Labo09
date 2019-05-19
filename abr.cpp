@@ -478,7 +478,7 @@ public:
     void visitPre(Fn f) {
         deque<Node*> d;
         Node* curr = _root;
-        if(curr->right) {
+        if (curr->right) {
             d.push_back(curr->right);
         }
         do {
@@ -529,31 +529,27 @@ public:
     void visitPost(Fn f) {
         //Todo visitPost
         /* ... */
+        deque<Node*> parentNode;
+        deque<Node*> childNode;
 
-//        deque<Node*> nodeDeque;
-//        nodeDeque.push_back(_root);
-//
-//        Node* nodeCheck = _root;
-//
-//        while (!nodeDeque.empty()) {
-//            while (nodeCheck->left != nullptr) {
-//                nodeDeque.push_back(nodeCheck->left);
-//                nodeCheck = nodeCheck->left;
-//            }
-//
-//            Node* currentNode = nodeDeque.back();
-//            nodeDeque.pop_back();
-//
-//            if (currentNode->right != nullptr) {
-//                nodeDeque.push_back(currentNode);
-//                nodeDeque.push_back(currentNode->right);
-//                nodeCheck = currentNode->right;
-//            } else {
-//                f(currentNode->key);
-//                nodeCheck->left = nullptr;
-//            }
-//
-//        }
+        parentNode.push_back(_root);
+
+        Node* currNode = nullptr;
+
+        while (!parentNode.empty()) {
+            currNode = parentNode.back();
+            parentNode.pop_back();
+
+            if (currNode->left != nullptr) parentNode.push_back(currNode->left);
+            if (currNode->right != nullptr) parentNode.push_back(currNode->right);
+            childNode.push_back(currNode);
+
+        }
+
+        while (!childNode.empty()) {
+            f(childNode.back()->key);
+            childNode.pop_back();
+        }
     }
 
 
