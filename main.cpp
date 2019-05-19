@@ -32,10 +32,15 @@ int main(){
     test.deleteMin();
 
     test.deleteElement(10);
+    test.deleteElement(16);
+    test.deleteElement(7);
+    test.deleteElement(10);
 
-    test.visitPost([](int value){
-        cout << value << " ";
-    });
-    //test.display();
+
+
+//    test.visitPost([](int value){
+//        cout << value << " ";
+//    });
+    test.display();
     return EXIT_SUCCESS;
 }

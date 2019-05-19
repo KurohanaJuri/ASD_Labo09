@@ -124,7 +124,7 @@ public:
     // récursive privée deleteSubTree(Node*)
     //
     ~BinarySearchTree() {
-        //TODo
+        deleteSubTree( _root );
     }
 
 private:
@@ -135,9 +135,6 @@ private:
     //          peut éventuellement valoir nullptr
     //
     static void deleteSubTree(Node* r) noexcept {
-        //Todo deleteSubTree
-        /* ... */
-
         if (r != nullptr) {
             deleteSubTree(r->left);
             deleteSubTree(r->right);
@@ -303,21 +300,20 @@ private:
                 delete (temp);
                 return true;
             } else {
-//                Node* subTreeMin = r->right;
-//                while (subTreeMin->left != nullptr) {
-//                    subTreeMin = subTreeMin->left;
-//                }
-//
-//                std::swap(r, subTreeMin);
-//
-//                std::swap(r->left, subTreeMin->left);
-//                std::swap(r->right, subTreeMin->right);
-//
-//
-//                //std::swap(r->left, subTreeMin->left);
-//
-//
-//                delete (subTreeMin);
+                Node* subTreeMin = r->right; //
+                Node* subTreeMinParent = nullptr;// Min in substree
+                while (subTreeMin->left != nullptr) {
+                    subTreeMinParent = subTreeMin;
+                    subTreeMin = subTreeMin->left;
+                }
+
+                subTreeMinParent->left = r;
+                std::swap(r, subTreeMin);
+                std::swap(r->left, subTreeMin->left);
+                std::swap(r->right, subTreeMin->right);
+
+                delete (subTreeMin);
+                subTreeMinParent->left = nullptr;
 
                 return true;
             }
@@ -527,8 +523,6 @@ public:
     //
     template<typename Fn>
     void visitPost(Fn f) {
-        //Todo visitPost
-        /* ... */
         deque<Node*> parentNode;
         deque<Node*> childNode;
 
