@@ -64,7 +64,7 @@ public:
      *  @brief Constructeur par défaut. Construit un arbre vide
      */
     BinarySearchTree() : _root(nullptr) {
-        //Todo Default constuctor
+        //Todo Default
         /* ... */
     }
 
@@ -138,8 +138,8 @@ private:
     //          peut éventuellement valoir nullptr
     //
     static void deleteSubTree(Node* r) noexcept {
-        if (r != nullptr) {
-            deleteSubTree(r->left);
+        if (r != nullptr) { // Condition d'arrêt pour la résursvité
+            deleteSubTree(r->left); //
             deleteSubTree(r->right);
         }
         delete (r);
@@ -173,14 +173,16 @@ private:
     // la fonction peut modifier x, reçu par référence, si nécessaire
     //
     static bool insert(Node*& r, const_reference key) {
-        if (r == nullptr) {
+        if (r == nullptr) { // Si la racine est nul on peut inserer directement
             r = new Node{key};
             return true;
-        } else if (key < r->key) {
+        } else if (key < r->key) { // Si la clé est plus petite que la clé du
+            // noeaud inserer à gauche
             insert(r->left, key);
-        } else if (key > r->key) {
+        } else if (key > r->key) { // Si la clé est plus grande que la clé du
+            // noeaud inserer à droite
             insert(r->right, key);
-        } else {
+        } else { // La clé est déja présent
             return false;
         }
         return false;
@@ -211,11 +213,13 @@ private:
     // @return vrai si la cle trouvee, faux sinon.
     //
     static bool contains(Node* r, const_reference key) noexcept {
-        if (r == nullptr) {
+        if (r == nullptr) { // Si le noeud est nul, il ne contient rien
             return false;
-        } else if (key < r->key) {
+        } else if (key < r->key) { // Si la clé est plus petit que la clé du
+            // noeud, l'élement recherché se trouve dans le sous-arbre gauche
             contains(r->left, key);
-        } else if (key > r->key) {
+        } else if (key > r->key) { // Si la clé est plus grand que la clé du
+            // noeud, l'élement recherché se trouve dans le sous-arbre droit
             contains(r->right, key);
         } else { // R.key = key
             return true;
@@ -232,7 +236,7 @@ public:
     //
     // vous pouvez mettre en oeuvre de manière iterative ou recursive a choix
     //
-    const_reference min() const {
+    const_reference min() const { // l'élement min se trouve tout à gauche de l'arbre
         Node* temp = _root;
         while (temp->left != nullptr) {
             temp = temp->left;
@@ -281,42 +285,49 @@ private:
     // retourne vrai
     //
     static bool deleteElement(Node*& r, const_reference key) noexcept {
-        /* ... */
-        //Todo deleteElement
-        if (r == nullptr) {
+        if (r == nullptr) { // Si r est nul, rien a supprimmer
             return false;
         }
 
-        if (key < r->key) {
+        if (key < r->key) { // Si la clé à supprimer est plus petite que la clé du
+            // neoeud, l'émeent se trouve dans le sous-arbre gauche
             return deleteElement(r->left, key);
-        } else if (key > r->key) {
+        } else if (key >
+                   r->key) { // Si la clé à supprimer est plus petite que la clé du
+            // neoeud, l'émeent se trouve dans le sous-arbre gauche
             return deleteElement(r->right, key);
         } else { //found
-            if (r->right == nullptr) {
+            if (r->right == nullptr) { // Si le fils droit n'existe pas, on
+                // supprime simplement la feuille
                 Node* temp = r;
                 r = r->left;
                 delete (temp);
                 return true;
-            } else if (r->left == nullptr) {
+            } else if (r->left == nullptr) { // Si le fils gauche n'existe pas, on
+                // supprime simplement la feuille
                 Node* temp = r;
                 r = r->right;
                 delete (temp);
                 return true;
-            } else {
-                Node* subTreeMin = r->right; //
-                Node* subTreeMinParent = nullptr;// Min in substree
-                while (subTreeMin->left != nullptr) {
+            } else { // Possède deux fils
+                Node* subTreeMin = r->right;
+                Node* subTreeMinParent = nullptr;
+                while (subTreeMin->left != nullptr) { // chercher le min dans le
+                    // sous arrbre droit
                     subTreeMinParent = subTreeMin;
                     subTreeMin = subTreeMin->left;
                 }
 
-                subTreeMinParent->left = r;
-                std::swap((reference) r->key, (reference) subTreeMin->key);
-                //std::swap(r->left, subTreeMin->left);
-                //std::swap(r->right, subTreeMin->right);
+                subTreeMinParent->left = r; // on indque que le nouveau fils est
+                // l'élement à supprimer
+                std::swap(r, subTreeMin);
+                // On swap les fils
+                std::swap(r->left, subTreeMin->left);
+                std::swap(r->right, subTreeMin->right);
                 deleteElement(r->left, r->key);
                 delete (subTreeMin);
-                subTreeMinParent->left = nullptr;
+                subTreeMinParent->left = nullptr; // indique que le fils gauche
+                // point sur rien
 
                 return true;
             }
@@ -475,10 +486,19 @@ public:
     //
     template<typename Fn>
     void visitPre(Fn f) {
+        //Appele de la fonction récursive
         visitPre(f, _root);
     }
 
 private :
+    //
+    // @brief Parcours pre-ordonne de l'arbre
+    //
+    // @param f une fonction capable d'être appelée en recevant une cle
+    //          en parametre. Pour le noeud n courrant, l'appel sera
+    //          f(n->key);
+    // @param root  La racine de sous arbre actuelle
+    //
     template<typename Fn>
     void visitPre(Fn f, Node* root) {
         if (root != nullptr) {
@@ -499,11 +519,21 @@ public:
     //
     template<typename Fn>
     void visitSym(Fn f) {
+        //Appele de la fonction récursive
         visitSym(f, _root);
     }
 
 private :
 
+
+    //
+    // @brief onction résusive privé pour le parcours symetrique de l'arbre
+    //
+    // @param f     une fonction capable d'être appelée en recevant une cle
+    //              en parametre. Pour le noeud n courrant, l'appel sera
+    //              f(n->key);
+    // @param root  La racine de sous arbre actuelle
+    //
     template<typename Fn>
     void visitSym(Fn f, Node* root) {
         if (root != nullptr) {
@@ -524,11 +554,20 @@ public:
     //
     template<typename Fn>
     void visitPost(Fn f) {
+        //Appele de la fonction récursive
         visitPost(f, _root);
     }
 
 private :
 
+    //
+    // @brief Parcours post-ordonne de l'arbre
+    //
+    // @param f une fonction capable d'être appelée en recevant une cle
+    //          en parametre. Pour le noeud n courrant, l'appel sera
+    //          f(n->key);
+    // @param root  La racine de sous arbre actuelle
+    //
     template<typename Fn>
     void visitPost(Fn f, Node* root) {
         if (root != nullptr) {
