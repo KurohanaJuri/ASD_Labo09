@@ -4,6 +4,9 @@
 //  Copyright (c) 2017 Olivier Cuisenaire. All rights reserved.
 //
 
+// Chau Ying Kot, Teo Ferrari, Gildas Houlmann
+// ASD1_B_J
+
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
@@ -124,7 +127,7 @@ public:
     // récursive privée deleteSubTree(Node*)
     //
     ~BinarySearchTree() {
-        deleteSubTree( _root );
+        deleteSubTree(_root);
     }
 
 private:
@@ -285,9 +288,9 @@ private:
         }
 
         if (key < r->key) {
-            deleteElement(r->left, key);
+            return deleteElement(r->left, key);
         } else if (key > r->key) {
-            deleteElement(r->right, key);
+            return deleteElement(r->right, key);
         } else { //found
             if (r->right == nullptr) {
                 Node* temp = r;
@@ -308,10 +311,10 @@ private:
                 }
 
                 subTreeMinParent->left = r;
-                std::swap(r, subTreeMin);
-                std::swap(r->left, subTreeMin->left);
-                std::swap(r->right, subTreeMin->right);
-
+                std::swap((reference) r->key, (reference) subTreeMin->key);
+                //std::swap(r->left, subTreeMin->left);
+                //std::swap(r->right, subTreeMin->right);
+                deleteElement(r->left, r->key);
                 delete (subTreeMin);
                 subTreeMinParent->left = nullptr;
 
@@ -472,24 +475,20 @@ public:
     //
     template<typename Fn>
     void visitPre(Fn f) {
-        deque<Node*> d;
-        Node* curr = _root;
-        if (curr->right) {
-            d.push_back(curr->right);
-        }
-        do {
-            while (curr != nullptr) {
-                f(curr->key);
-                if (curr->right) {
-                    d.push_back(curr->right);
-                }
-                curr = curr->left;
-            }
-            curr = d.back();
-            d.pop_back();
-
-        } while (!d.empty());
+        visitPre(f, _root);
     }
+
+private :
+    template<typename Fn>
+    void visitPre(Fn f, Node* root) {
+        if (root != nullptr) {
+            f(root->key);
+            visitPre(f, root->left);
+            visitPre(f, root->right);
+        }
+    }
+
+public:
 
     //
     // @brief Parcours symétrique de l'arbre
@@ -500,19 +499,21 @@ public:
     //
     template<typename Fn>
     void visitSym(Fn f) {
-        queue<Node*> q;
-        q.push(_root);
+        visitSym(f, _root);
+    }
 
-        while (!q.empty()) {
-            Node* n = q.front();
-            q.pop();
-            if (n != nullptr) {
-                f(n->key);
-                q.push(n->left);
-                q.push(n->right);
-            }
+private :
+
+    template<typename Fn>
+    void visitSym(Fn f, Node* root) {
+        if (root != nullptr) {
+            visitSym(f, root->left);
+            f(root->key);
+            visitSym(f, root->right);
         }
     }
+
+public:
 
     //
     // @brief Parcours post-ordonne de l'arbre
@@ -523,28 +524,21 @@ public:
     //
     template<typename Fn>
     void visitPost(Fn f) {
-        deque<Node*> parentNode;
-        deque<Node*> childNode;
+        visitPost(f, _root);
+    }
 
-        parentNode.push_back(_root);
+private :
 
-        Node* currNode = nullptr;
-
-        while (!parentNode.empty()) {
-            currNode = parentNode.back();
-            parentNode.pop_back();
-
-            if (currNode->left != nullptr) parentNode.push_back(currNode->left);
-            if (currNode->right != nullptr) parentNode.push_back(currNode->right);
-            childNode.push_back(currNode);
-
-        }
-
-        while (!childNode.empty()) {
-            f(childNode.back()->key);
-            childNode.pop_back();
+    template<typename Fn>
+    void visitPost(Fn f, Node* root) {
+        if (root != nullptr) {
+            visitPost(f, root->left);
+            visitPost(f, root->right);
+            f(root->key);
         }
     }
+
+public:
 
 
     //

@@ -32,6 +32,7 @@ int main(){
     test.deleteMin();
 
     test.deleteElement(10);
+    cout << boolalpha << test.contains(16) << endl;
     test.deleteElement(16);
     test.deleteElement(7);
     test.deleteElement(10);
