@@ -139,8 +139,13 @@ private:
     //
     static void deleteSubTree(Node* r) noexcept {
         if (r != nullptr) { // Condition d'arrêt pour la résursvité
-            deleteSubTree(r->left); //
-            deleteSubTree(r->right);
+            if (r->left != nullptr) {
+                deleteSubTree(r->left);
+            }
+            if (r->right != nullptr) {
+                deleteSubTree(r->right);
+            }
+
         }
         delete (r);
     }
@@ -175,17 +180,21 @@ private:
     static bool insert(Node*& r, const_reference key) {
         if (r == nullptr) { // Si la racine est nul on peut inserer directement
             r = new Node{key};
+            r->nbElements = 1;
             return true;
         } else if (key < r->key) { // Si la clé est plus petite que la clé du
             // noeaud inserer à gauche
-            insert(r->left, key);
+            if (insert(r->left, key)) {
+                r->nbElements++;
+            }
         } else if (key > r->key) { // Si la clé est plus grande que la clé du
             // noeaud inserer à droite
-            insert(r->right, key);
+            if (insert(r->right, key)) {
+                r->nbElements++;
+            }
         } else { // La clé est déja présent
             return false;
         }
-        return false;
     }
 
 public:
@@ -254,6 +263,7 @@ public:
     void deleteMin() {
         const value_type minKey = min();
         deleteElement(minKey);
+
     }
 
 
@@ -403,8 +413,15 @@ private:
     // @return la position entre 0 et size()-1, size_t(-1) si la cle est absente
     //
     static size_t rank(Node* r, const_reference key) noexcept {
-        /* ... */
-        return -1;
+        if (r != nullptr) {
+            return -1;
+        } else if (key < r->key) {
+            return rank(r->left, key);
+        } else if (key > r->key) {
+            return rank(r->right, key) + r->left->nbElements + 1;
+        } else {
+            return r->left->nbElements + 1;
+        }
     }
 
 public:
