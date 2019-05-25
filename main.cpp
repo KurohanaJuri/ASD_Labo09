@@ -4,12 +4,12 @@
 
 using namespace std;
 
-template <typename T>
-void afficher(T value){
-    cout << value ;
+template<typename T>
+void afficher(T value) {
+    cout << value;
 }
 
-int main(){
+int main() {
 
     BinarySearchTree<int> test;
 
@@ -29,13 +29,10 @@ int main(){
     test.insert(13);
 
 
+    test.deleteMin();
+    test.deleteMin();
 
-
-
-//    test.deleteMin();
-//    test.deleteMin();
-//
-//    test.deleteElement(10);
+    test.deleteElement(10);
 //    cout << boolalpha << test.contains(16) << endl;
 //    test.deleteElement(16);
 //    test.deleteElement(7);

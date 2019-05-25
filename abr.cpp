@@ -196,7 +196,7 @@ private:
         } else if (key > r->key) { // Si la clé est plus grande que la clé du
             // noeaud inserer à droite
             if (insert(r->right, key)) {
-               if (r->right == nullptr) {
+                if (r->right == nullptr) {
                     r->nbElements = (r->left->nbElements + 1);
                 } else if (r->left == nullptr) {
                     r->nbElements = (r->right->nbElements + 1);
@@ -205,7 +205,6 @@ private:
                 }
             }
         } else {// La clé est déja présent
-
             return false;
         }
     }
@@ -311,14 +310,17 @@ private:
         if (r == nullptr) { // Si r est nul, rien a supprimmer
             return false;
         }
-
+        bool deleted;
         if (key < r->key) { // Si la clé à supprimer est plus petite que la clé du
             // neoeud, l'émeent se trouve dans le sous-arbre gauche
-            return deleteElement(r->left, key);
-        } else if (key >
-                   r->key) { // Si la clé à supprimer est plus petite que la clé du
-            // neoeud, l'émeent se trouve dans le sous-arbre gauche
-            return deleteElement(r->right, key);
+            deleted = deleteElement(r->left, key);
+            if (deleted) r->nbElements--;
+            return deleted;
+        } else if (key > r->key) { // Si la clé à supprimer est plus petite que la
+            // clé du neoeud, l'émeent se trouve dans le sous-arbre gauche
+            deleted = deleteElement(r->right, key);
+            if (deleted) r->nbElements--;
+            return deleted;
         } else { //found
             if (r->right == nullptr) { // Si le fils droit n'existe pas, on
                 // supprime simplement la feuille
@@ -347,10 +349,8 @@ private:
                 // On swap les fils
                 std::swap(r->left, subTreeMin->left);
                 std::swap(r->right, subTreeMin->right);
-                deleteElement(r->left, r->key);
-                delete (subTreeMin);
-                subTreeMinParent->left = nullptr; // indique que le fils gauche
-                // point sur rien
+                std::swap(r->nbElements, --subTreeMin->nbElements);
+                deleteElement(r->right, subTreeMin->key);
 
                 return true;
             }
