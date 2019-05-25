@@ -185,14 +185,27 @@ private:
         } else if (key < r->key) { // Si la clé est plus petite que la clé du
             // noeaud inserer à gauche
             if (insert(r->left, key)) {
-                r->nbElements++;
+                if (r->right == nullptr) {
+                    r->nbElements = (r->left->nbElements + 1);
+                } else if (r->left == nullptr) {
+                    r->nbElements = (r->right->nbElements + 1);
+                } else {
+                    r->nbElements = r->right->nbElements + r->left->nbElements + 1;
+                }
             }
         } else if (key > r->key) { // Si la clé est plus grande que la clé du
             // noeaud inserer à droite
             if (insert(r->right, key)) {
-                r->nbElements++;
+               if (r->right == nullptr) {
+                    r->nbElements = (r->left->nbElements + 1);
+                } else if (r->left == nullptr) {
+                    r->nbElements = (r->right->nbElements + 1);
+                } else {
+                    r->nbElements = r->right->nbElements + r->left->nbElements + 1;
+                }
             }
-        } else { // La clé est déja présent
+        } else {// La clé est déja présent
+
             return false;
         }
     }
