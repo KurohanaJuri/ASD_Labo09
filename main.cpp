@@ -34,15 +34,22 @@ int main() {
 
     test.deleteElement(10);
 //    cout << boolalpha << test.contains(16) << endl;
-//    test.deleteElement(16);
-//    test.deleteElement(7);
-//    test.deleteElement(10);
+    test.deleteElement(16);
+    test.deleteElement(7);
+    test.deleteElement(10);
 
 
 
 //    test.visitPost([](int value){
 //        cout << value << " ";
 //    });
+
+    cout << test.size() << endl;
+
+    cout << test.nth_element(3) << endl;
+    cout << test.rank(13);
+
+
     test.display();
     return EXIT_SUCCESS;
 }
