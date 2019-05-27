@@ -95,8 +95,7 @@ public:
      *
      */
     BinarySearchTree& operator=(const BinarySearchTree& other) {
-        /* ... */
-        _root = std::move(other._root);
+        this->copy(other._root);
         return *this;
     }
 
@@ -107,7 +106,7 @@ public:
      *
      */
     void swap(BinarySearchTree& other) noexcept {
-        /* ... */
+        std::swap(_root, other._root);
     }
 
     /**
@@ -127,7 +126,8 @@ public:
      *
      */
     BinarySearchTree& operator=(BinarySearchTree&& other) noexcept {
-        /* ... */
+        _root = std::move(other._root);
+        other._root = nullptr;
         return *this;
     }
 
