@@ -74,8 +74,7 @@ public:
      *  @param other le BinarySearchTree à copier
      *
      */
-    BinarySearchTree(BinarySearchTree& other) {
-        /* ... */
+    BinarySearchTree(BinarySearchTree& other): _root(nullptr) {
         copy(other._root);
     }
 
@@ -97,6 +96,7 @@ public:
      */
     BinarySearchTree& operator=(const BinarySearchTree& other) {
         /* ... */
+        _root = std::move(other._root);
         return *this;
     }
 
@@ -253,10 +253,10 @@ private:
             return false;
         } else if (key < r->key) { // Si la clé est plus petit que la clé du
             // noeud, l'élement recherché se trouve dans le sous-arbre gauche
-            contains(r->left, key);
+            return contains (r->left, key);
         } else if (key > r->key) { // Si la clé est plus grand que la clé du
             // noeud, l'élement recherché se trouve dans le sous-arbre droit
-            contains(r->right, key);
+            return contains(r->right, key);
         } else { // R.key = key
             return true;
         }
@@ -290,7 +290,6 @@ public:
     void deleteMin() {
         const value_type minKey = min();
         deleteElement(minKey);
-
     }
 
 

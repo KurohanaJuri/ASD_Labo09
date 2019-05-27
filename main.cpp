@@ -38,7 +38,12 @@ int main() {
     test.deleteElement(7);
     test.deleteElement(10);
 
-
+    cout << endl;
+    cout << "-----------------" << endl;
+    cout << test.rank(11) << " " << test.rank(5) << " " << test.rank(12) << " "
+         << test.rank(4) << " " << test.rank(6) << " " << test.rank(15) << " "
+         << test.rank(2) << " " << test.rank(13) << endl;
+    cout << "-----------------" << endl;
 
 //    test.visitPost([](int value){
 //        cout << value << " ";
@@ -47,8 +52,13 @@ int main() {
     cout << test.size() << endl;
 
     cout << test.nth_element(3) << endl;
-    cout << test.rank(13);
 
+    BinarySearchTree<int> test2(test);
+
+    BinarySearchTree<int> test3;
+    test3.insert(100);
+
+    test = test3;
 
     test.display();
     return EXIT_SUCCESS;
