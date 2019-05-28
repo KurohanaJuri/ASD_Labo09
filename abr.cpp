@@ -74,7 +74,7 @@ public:
      *  @param other le BinarySearchTree à copier
      *
      */
-    BinarySearchTree(BinarySearchTree& other): _root(nullptr) {
+    BinarySearchTree(BinarySearchTree& other) : _root(nullptr) {
         copy(other._root);
     }
 
@@ -95,7 +95,9 @@ public:
      *
      */
     BinarySearchTree& operator=(const BinarySearchTree& other) {
-        this->copy(other._root);
+        BinarySearchTree temp;
+        temp.copy(other._root);
+        std::swap(temp._root, _root);
         return *this;
     }
 
@@ -253,7 +255,7 @@ private:
             return false;
         } else if (key < r->key) { // Si la clé est plus petit que la clé du
             // noeud, l'élement recherché se trouve dans le sous-arbre gauche
-            return contains (r->left, key);
+            return contains(r->left, key);
         } else if (key > r->key) { // Si la clé est plus grand que la clé du
             // noeud, l'élement recherché se trouve dans le sous-arbre droit
             return contains(r->right, key);
@@ -447,14 +449,14 @@ private:
     // @return la position entre 0 et size()-1, size_t(-1) si la cle est absente
     //
     static size_t rank(Node* r, const_reference key) noexcept {
-        if (r == nullptr) { // Key not found
+        if (r == nullptr || !contains(r, key)) { // Key not found
             return size_t(-1);
         } else if (key < r->key) {
-            return rank(r->left, key);
+            rank(r->left, key);
         } else if (key > r->key) {
             return rank(r->right, key) +
-                   (r->left == nullptr ? 0 : r->left->nbElements);
-        } else {
+                   (r->left == nullptr ? 0 : r->left->nbElements) + 1;
+        } else { // Key found
             return (r->left == nullptr ? 0 : r->left->nbElements);
         }
     }

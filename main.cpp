@@ -38,6 +38,8 @@ int main() {
     test.deleteElement(7);
     test.deleteElement(10);
 
+    test.display();
+
     cout << endl;
     cout << "-----------------" << endl;
     cout << test.rank(11) << " " << test.rank(5) << " " << test.rank(12) << " "
