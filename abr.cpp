@@ -495,7 +495,20 @@ private:
     //             avez uniquement le droit d'utiliser l'opérateur ++.
     //
     static void linearize(Node* tree, Node*& list, size_t& cnt) noexcept {
-        /* ... */
+       if(tree == nullptr) return;
+       if(list == nullptr){
+          list = new Node{tree->key};
+          cout << "liste nullptr" << endl;
+       }
+         
+         linearize(tree->left, list, cnt);
+         
+         list->right = new Node{tree->key};
+         cout << tree->key << endl;
+         
+         cnt++;       
+         linearize(tree->right,list, cnt);
+       
     }
 
 public:
