@@ -75,7 +75,9 @@ public:
      *
      */
     BinarySearchTree(BinarySearchTree& other) : _root(nullptr) {
-        copy(other._root);
+        BinarySearchTree temp;
+        temp.copy(other._root);
+        std::swap(temp._root, _root);
     }
 
 private :
