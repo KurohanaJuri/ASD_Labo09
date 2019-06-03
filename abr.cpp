@@ -499,29 +499,19 @@ private:
     static void linearize(Node* tree, Node*& list, size_t& cnt) noexcept {
 
         if (tree == nullptr) return;
+        if (tree->right != nullptr) {
+            linearize(tree->right, list, cnt);
+        }
+
+        tree->right = list;
+        list = tree;
+        cnt++;
+        list->nbElements = cnt;
+
         if (tree->left != nullptr) {
             linearize(tree->left, list, cnt);
         }
-        Node* top;
-        if (list == nullptr) {
-            list = tree;
-            top = list;
-            ++cnt;
-        }
-        else {
-            top = list;
-            for(size_t i = 0; i < cnt-1; ++i){
-                list = list->right;
-            }
-            list->right = tree;
-            list->right->left = nullptr;
-            ++cnt;
-        }
-
-        if (tree->right != nullptr) {
-            linearize(tree->right, top, cnt);
-        }
-        list = top;
+        tree->left = nullptr;
     }
 
 
