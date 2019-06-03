@@ -60,8 +60,32 @@ int main() {
     BinarySearchTree<int> test3;
     test3.insert(100);
 
-    test = test3;
+    BinarySearchTree<int> abr2;
+    abr2.insert(17);
+    abr2.insert(4);
+    abr2.insert(1);
+    abr2.insert(2);
+    abr2.insert(3);
+    abr2.insert(5);
+    abr2.insert(6);
+    abr2.insert(7);
+    abr2.insert(8);
+    abr2.insert(42);
+    abr2.insert(45);
+    abr2.insert(1);
+    abr2.insert(2);
 
-    test.display();
+/*    abr2.insert(12);
+    abr2.insert(6);
+    abr2.insert(15);*/
+
+
+
+
+    abr2.display();
+
+    abr2.linearize();
+
+    abr2.display();
     return EXIT_SUCCESS;
 }

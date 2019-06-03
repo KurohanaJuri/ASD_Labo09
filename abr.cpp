@@ -497,21 +497,33 @@ private:
     //             avez uniquement le droit d'utiliser l'opérateur ++.
     //
     static void linearize(Node* tree, Node*& list, size_t& cnt) noexcept {
-       if(tree == nullptr) return;
-       if(list == nullptr){
-          list = new Node{tree->key};
-          cout << "liste nullptr" << endl;
-       }
-         
-         linearize(tree->left, list, cnt);
-         
-         list->right = new Node{tree->key};
-         cout << tree->key << endl;
-         
-         cnt++;       
-         linearize(tree->right,list, cnt);
-       
+
+        if (tree == nullptr) return;
+        if (tree->left != nullptr) {
+            linearize(tree->left, list, cnt);
+        }
+        Node* top;
+        if (list == nullptr) {
+            list = tree;
+            top = list;
+            ++cnt;
+        }
+        else {
+            top = list;
+            for(size_t i = 0; i < cnt-1; ++i){
+                list = list->right;
+            }
+            list->right = tree;
+            list->right->left = nullptr;
+            ++cnt;
+        }
+
+        if (tree->right != nullptr) {
+            linearize(tree->right, top, cnt);
+        }
+        list = top;
     }
+
 
 public:
     //
@@ -669,7 +681,8 @@ public:
         cout << "\n";
         cout << "+-" << left << setfill('-') << setw(W) << "-" << "+-" << setw(W)
              << "-" << setfill(' ') << "+" << endl;
-        cout << "| " << left << setw(W) << "key" << "| " << setw(W) << "nbElements"
+        cout << "| " << left << setw(W) << "key" << "| " << setw(W)
+             << "nbElements"
              << "|" << endl;
         cout << "+-" << left << setfill('-') << setw(W) << "-" << "+-" << setw(W)
              << "-" << setfill(' ') << "+" << endl;
