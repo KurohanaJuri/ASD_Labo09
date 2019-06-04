@@ -567,15 +567,20 @@ private:
         }
 
         Node* RG = list->right;
-        arborize(RG, list, (cnt - 1) / 2);
+        arborize(RG, list, (cnt - 1) / 2); //arborise le noeud suivant dans la
+        // liste, on remonte d'un hauteur dont le cnt est div par 2 et moins 1
+        // pour le côté gauche de l'arbre
 
-        tree = list;
+        tree = list; // on indique que la racine est le 1er elem de la list (pop())
 
-        list->nbElements = cnt;
-        tree->left = RG;
-        list = list->right;
+        list->nbElements = cnt; // Maj du nbre d'élément
 
-        arborize(tree->right, list, cnt / 2);
+        tree->left = RG; // L'elem a droit est le suivant que la liste
+        list = list->right; // Maj de la list, la tête de la liste est le noeud
+        // suivant
+
+        arborize(tree->right, list, cnt / 2); // on arborise le côté droit de
+        // l'arbre, on remonte d'un hauteur dont le cnt est div par 2 
     }
 
 public:
