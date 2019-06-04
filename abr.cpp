@@ -562,20 +562,20 @@ private:
     //
     static void arborize(Node*& tree, Node*& list, size_t cnt) noexcept {
         if (cnt == 0) {
-            tree = nullptr;
+            tree = nullptr;// Le le counter est à zero donc l'arbre est vide
             return;
         }
 
-        Node* RG = nullptr;
+        Node* RG = list->right;
         arborize(RG, list, (cnt - 1) / 2);
 
         tree = list;
 
         list->nbElements = cnt;
-        list = list->right;
         tree->left = RG;
-        arborize(tree->right, list, cnt / 2);
+        list = list->right;
 
+        arborize(tree->right, list, cnt / 2);
     }
 
 public:
