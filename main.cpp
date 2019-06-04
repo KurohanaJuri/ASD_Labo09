@@ -61,17 +61,9 @@ int main() {
     test3.insert(100);
 
     BinarySearchTree<int> abr2;
-    abr2.insert(17);
-    abr2.insert(4);
-    abr2.insert(1);
-    abr2.insert(2);
     abr2.insert(3);
-    abr2.insert(5);
-    abr2.insert(6);
     abr2.insert(7);
-    abr2.insert(8);
-    abr2.insert(42);
-    abr2.insert(45);
+    abr2.insert(4);
     abr2.insert(1);
     abr2.insert(2);
 
@@ -84,7 +76,7 @@ int main() {
 
     abr2.display();
 
-    abr2.linearize();
+    abr2.balance();
 
     abr2.display();
     return EXIT_SUCCESS;

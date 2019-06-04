@@ -64,28 +64,33 @@ public:
      *  @brief Constructeur par défaut. Construit un arbre vide
      */
     BinarySearchTree() : _root(nullptr) {
-        //Todo Default
         /* ... */
     }
 
     /**
-     *  @brief Constucteur de copie.
+     *  @brief Constucteur de copie. Crée un arbre temporaire et copie l'arbre
+     *  dans la valeur temp et si tout ce passe bien, on swap les deux racine
      *
      *  @param other le BinarySearchTree à copier
      *
      */
     BinarySearchTree(BinarySearchTree& other) : _root(nullptr) {
         BinarySearchTree temp;
-        temp.copy(other._root);
+        temp.copyTree(other._root);
         std::swap(temp._root, _root);
     }
 
+
 private :
-    void copy(const Node* node) {
+    /**
+     * @brief Copie l'arbre l'arbre courant depuis le noeud donéée
+     * @param node la racine de l'arbre où on commence à copier
+     */
+    void copyTree(const Node* node) {
         if (node != nullptr) {
             insert(node->key);
-            copy(node->left);
-            copy(node->right);
+            copyTree(node->left);
+            copyTree(node->right);
         }
     }
 
@@ -98,7 +103,7 @@ public:
      */
     BinarySearchTree& operator=(const BinarySearchTree& other) {
         BinarySearchTree temp;
-        temp.copy(other._root);
+        temp.copyTree(other._root);
         std::swap(temp._root, _root);
         return *this;
     }
@@ -545,6 +550,40 @@ private:
     //             arboriser le sous arbre
     //
     static void arborize(Node*& tree, Node*& list, size_t cnt) noexcept {
+        if (cnt == 0) {
+            tree = nullptr;
+            return;
+        }
+
+        Node* RG = nullptr;
+        //arborize(RG, list, (cnt - 1) / 2);
+        arborize(tree, list, (cnt - 1) / 2);
+
+        tree = list;
+
+        list->nbElements = cnt;
+        list = list->right;
+        //tree->left = list->right;
+        //tree->left = RG;
+        tree->left = tree;
+        arborize(tree->right, list, cnt / 2);
+        //tree->right = list;
+
+    }
+
+private:
+    static Node* arborize(Node*& list, size_t cnt) {
+        if (cnt == 0) return nullptr;
+
+        Node* RG = arborize(list, (cnt - 1) / 2);
+
+        Node* R = list;
+        list->nbElements = cnt;
+        list = list->right;
+
+        R->left = RG;
+        R->right = arborize(list, cnt / 2);
+        return R;
     }
 
 public:
