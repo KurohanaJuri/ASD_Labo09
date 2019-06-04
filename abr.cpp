@@ -571,27 +571,11 @@ private:
 
         tree = list;
 
-
         list->nbElements = cnt;
         list = list->right;
         tree->left = RG;
         arborize(tree->right, list, cnt / 2);
 
-    }
-
-private:
-    static Node* arborize(Node*& list, size_t cnt) {
-        if (cnt == 0) return nullptr;
-
-        Node* RG = arborize(list, (cnt - 1) / 2);
-
-        Node* R = list;
-        list->nbElements = cnt;
-        list = list->right;
-
-        R->left = RG;
-        R->right = arborize(list, cnt / 2);
-        return R;
     }
 
 public:
