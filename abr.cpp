@@ -83,7 +83,8 @@ public:
 
 private :
     /**
-     * @brief Copie l'arbre l'arbre courant depuis le noeud donéée
+     * @brief Copie l'arbre l'arbre courant depuis le noeud donée
+     *
      * @param node la racine de l'arbre où on commence à copier
      */
     void copyTree(const Node* node) {
@@ -96,7 +97,9 @@ private :
 
 public:
     /**
-     *  @brief Opérateur d'affectation par copie.
+     *  @brief Opérateur d'affectation par copie. Crée un arbre temporaire et copie
+     *  l'arbre dans la valeur temp et si tout ce passe bien, on swap les
+     *  deux racine et retourne un pointer sur l'arbre
      *
      *  @param other le BinarySearchTree à copier
      *
@@ -110,6 +113,7 @@ public:
 
     /**
      *  @brief Echange le contenu avec un autre BST
+     *  Swap les deux racines
      *
      *  @param other le BST avec lequel on echange le contenu
      *
@@ -119,7 +123,9 @@ public:
     }
 
     /**
-     *  @brief constructeur de copie par déplacement
+     *  @brief constructeur de copie par déplacement, deplace les ressources de
+     *  l'arbre passée en paramètre vers notre arbre courant.
+     *  La racine de l'arbre passée en paramètre pointera sur un nullptr
      *
      *  @param other le BST dont on vole le contenu
      *
@@ -129,7 +135,10 @@ public:
     }
 
     /**
-     *  @brief Opérateur d'affectation par déplacement.
+     *  @brief Opérateur d'affectation par déplacement, deplace les ressources de
+     *  l'arbre passée en paramètre vers notre arbre courant.
+     *  La racine de l'arbre passée en paramètre pointera sur un nullptr
+     *  Il retourne un pointer sur l'arbre courant
      *
      *  @param other le BST dont on vole le contenu
      *
@@ -504,19 +513,21 @@ private:
     static void linearize(Node* tree, Node*& list, size_t& cnt) noexcept {
 
         if (tree == nullptr) return;
-        if (tree->right != nullptr) {
+
+        if (tree->right != nullptr) { // lineralise le coté droite
             linearize(tree->right, list, cnt);
         }
 
         tree->right = list;
-        list = tree;
+        list = tree; //Ajoute la racine de l'arbre dans la liste
         cnt++;
-        list->nbElements = cnt;
+        list->nbElements = cnt; // MAJ du nbre d'element
 
-        if (tree->left != nullptr) {
+        if (tree->left != nullptr) { // lineralise le coté gauche
             linearize(tree->left, list, cnt);
         }
-        tree->left = nullptr;
+
+        tree->left = nullptr; // indique que le fils gauche n'existe pas (nullptr)
     }
 
 
@@ -556,18 +567,15 @@ private:
         }
 
         Node* RG = nullptr;
-        //arborize(RG, list, (cnt - 1) / 2);
-        arborize(tree, list, (cnt - 1) / 2);
+        arborize(RG, list, (cnt - 1) / 2);
 
         tree = list;
 
+
         list->nbElements = cnt;
         list = list->right;
-        //tree->left = list->right;
-        //tree->left = RG;
-        tree->left = tree;
+        tree->left = RG;
         arborize(tree->right, list, cnt / 2);
-        //tree->right = list;
 
     }
 
