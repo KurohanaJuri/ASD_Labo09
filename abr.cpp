@@ -62,6 +62,8 @@ private:
 public:
     /**
      *  @brief Constructeur par défaut. Construit un arbre vide
+     *
+     *  @remark O(1)
      */
     BinarySearchTree() : _root(nullptr) {
         /* ... */
@@ -72,6 +74,8 @@ public:
      *  dans la valeur temp et si tout ce passe bien, on swap les deux racine
      *
      *  @param other le BinarySearchTree à copier
+     *
+     *  @remark O(n)
      *
      */
     BinarySearchTree(BinarySearchTree& other) : _root(nullptr) {
@@ -86,6 +90,8 @@ private :
      * @brief Copie l'arbre l'arbre courant depuis le noeud donée
      *
      * @param node la racine de l'arbre où on commence à copier
+     *
+     * @remark O(n)
      */
     void copyTree(const Node* node) {
         if (node != nullptr) {
@@ -103,6 +109,8 @@ public:
      *
      *  @param other le BinarySearchTree à copier
      *
+     *  @remark O(n)
+     *
      */
     BinarySearchTree& operator=(const BinarySearchTree& other) {
         BinarySearchTree temp;
@@ -117,6 +125,8 @@ public:
      *
      *  @param other le BST avec lequel on echange le contenu
      *
+     *  @remark O(1)
+     *
      */
     void swap(BinarySearchTree& other) noexcept {
         std::swap(_root, other._root);
@@ -128,6 +138,8 @@ public:
      *  La racine de l'arbre passée en paramètre pointera sur un nullptr
      *
      *  @param other le BST dont on vole le contenu
+     *
+     *  @remark O(1)
      *
      */
     BinarySearchTree(BinarySearchTree&& other) noexcept : _root(move(other._root)) {
@@ -142,6 +154,8 @@ public:
      *
      *  @param other le BST dont on vole le contenu
      *
+     *  @remark O(1)
+     *
      */
     BinarySearchTree& operator=(BinarySearchTree&& other) noexcept {
         _root = std::move(other._root);
@@ -155,6 +169,7 @@ public:
     // Ne pas modifier mais écrire la fonction
     // récursive privée deleteSubTree(Node*)
     //
+    // @remark O(n)
     ~BinarySearchTree() {
         deleteSubTree(_root);
     }
@@ -166,6 +181,7 @@ private:
     // @param r la racine du sous arbre à détruire.
     //          peut éventuellement valoir nullptr
     //
+    // @remark O(taille de l'arbre avec r comme racine)
     static void deleteSubTree(Node* r) noexcept {
         if (r != nullptr) { // Condition d'arrêt pour la résursvité
             if (r->left != nullptr) {
@@ -188,6 +204,7 @@ public:
     // Ne pas modifier mais écrire la fonction
     // récursive privée insert(Node*&,const_reference)
     //
+    // @remark O(log(n))
     void insert(const_reference key) {
         insert(_root, key);
     }
@@ -206,6 +223,7 @@ private:
     // x peut éventuellement valoir nullptr en entrée.
     // la fonction peut modifier x, reçu par référence, si nécessaire
     //
+    // @remark O(log(n))
     static bool insert(Node*& r, const_reference key) {
         if (r == nullptr) { // Si la racine est nul on peut inserer directement
             r = new Node{key};
@@ -253,6 +271,7 @@ public:
     // Ne pas modifier mais écrire la fonction
     // récursive privée contains(Node*,const_reference)
     //
+    // @remark O(log(n))
     bool contains(const_reference key) const noexcept {
         return contains(_root, key);
     }
@@ -266,6 +285,7 @@ private:
     //
     // @return vrai si la cle trouvee, faux sinon.
     //
+    // @remark  O(log(n))
     static bool contains(Node* r, const_reference key) noexcept {
         if (r == nullptr) { // Si le noeud est nul, il ne contient rien
             return false;
@@ -290,6 +310,7 @@ public:
     //
     // vous pouvez mettre en oeuvre de manière iterative ou recursive a choix
     //
+    // @remark O(log(n))
     const_reference min() const { // l'élement min se trouve tout à gauche de l'arbre
         Node* temp = _root;
         while (temp->left != nullptr) {
@@ -305,6 +326,7 @@ public:
     //
     // vous pouvez mettre en oeuvre de manière iterative ou recursive a choix
     //
+    // @remark O(log(n))
     void deleteMin() {
         const value_type minKey = min();
         deleteElement(minKey);
@@ -323,6 +345,7 @@ public:
     // Ne pas modifier mais écrire la fonction
     // récursive privée deleteElement(Node*&,const_reference)
     //
+    // @remark O(log(n))
     bool deleteElement(const_reference key) noexcept {
         return deleteElement(_root, key);
     }
@@ -338,6 +361,7 @@ private:
     // l'arbre mais retourne false. Si l'element est present, elle
     // retourne vrai
     //
+    // @remark O(log(n))
     static bool deleteElement(Node*& r, const_reference key) noexcept {
         if (r == nullptr) { // Si r est nul, rien a supprimmer
             return false;
@@ -395,6 +419,7 @@ public:
     //
     // @return le nombre d'elements de l'arbre
     //
+    // @remark O(1)
     size_t size() const noexcept {
         return _root->nbElements;
     }
@@ -410,6 +435,7 @@ public:
     // ajoutez le code de gestion des exceptions, puis mettez en oeuvre
     // la fonction recursive nth_element(Node*, n)
     //
+    // @remark O(log(n))
     const_reference nth_element(size_t n) const {
         if (n > _root->nbElements)
             throw std::logic_error("La position est plus "
@@ -428,6 +454,7 @@ private:
     // @return une reference a la cle en position n par ordre croissant des
     // elements
     //
+    // @remark O(log(n))
     static const_reference nth_element(Node* r, size_t n) noexcept {
         assert(r != nullptr);
         size_t s = r->left == nullptr ? 0 : r->left->nbElements;
@@ -451,6 +478,7 @@ public:
     // Ne pas modifier mais écrire la fonction
     // récursive privée rank(Node*,const_reference)
     //
+    // @remark O(log(n))
     size_t rank(const_reference key) const noexcept {
         return rank(_root, key);
     }
@@ -464,6 +492,7 @@ private:
     //
     // @return la position entre 0 et size()-1, size_t(-1) si la cle est absente
     //
+    // @remark O(log(n))
     static size_t rank(Node* r, const_reference key) noexcept {
         if (r == nullptr || !contains(r, key)) { // Key not found
             return size_t(-1);
@@ -490,6 +519,7 @@ public:
     // fonction recursive linearize(Node*, Node*&, size_t&) utilisée par
     // la methode publique arborize
     //
+    // @remark O(n)
     void linearize() noexcept {
         size_t cnt = 0;
         Node* list = nullptr;
@@ -510,6 +540,7 @@ private:
     //             d'elements du sous-arbre de racine tree. Cependant, vous
     //             avez uniquement le droit d'utiliser l'opérateur ++.
     //
+    // @remark O(n)
     static void linearize(Node* tree, Node*& list, size_t& cnt) noexcept {
 
         if (tree == nullptr) return;
@@ -540,6 +571,7 @@ public:
     //
     // Ne pas modifier cette fonction.
     //
+    // @remark O(n)
     void balance() noexcept {
         size_t cnt = 0;
         Node* list = nullptr;
@@ -560,6 +592,7 @@ private:
     // @param cnt  nombre d'elements de la liste que l'on doit utiliser pour
     //             arboriser le sous arbre
     //
+    // @remark O(n)
     static void arborize(Node*& tree, Node*& list, size_t cnt) noexcept {
         if (cnt == 0) {
             tree = nullptr;// Le le counter est à zero donc l'arbre est vide
@@ -580,7 +613,7 @@ private:
         // suivant
 
         arborize(tree->right, list, cnt / 2); // on arborise le côté droit de
-        // l'arbre, on remonte d'un hauteur dont le cnt est div par 2 
+        // l'arbre, on remonte d'un hauteur dont le cnt est div par 2
     }
 
 public:
@@ -591,6 +624,7 @@ public:
     //          en parametre. Pour le noeud n courrant, l'appel sera
     //          f(n->key);
     //
+    // @remark O(n)
     template<typename Fn>
     void visitPre(Fn f) {
         //Appele de la fonction récursive
@@ -606,6 +640,7 @@ private :
     //          f(n->key);
     // @param root  La racine de sous arbre actuelle
     //
+    // @remark O(n)
     template<typename Fn>
     void visitPre(Fn f, Node* root) {
         if (root != nullptr) {
@@ -624,6 +659,7 @@ public:
     //          en parametre. Pour le noeud n courrant, l'appel sera
     //          f(n->key);
     //
+    // @remark O(n)
     template<typename Fn>
     void visitSym(Fn f) {
         //Appele de la fonction récursive
@@ -641,6 +677,7 @@ private :
     //              f(n->key);
     // @param root  La racine de sous arbre actuelle
     //
+    // @remark O(n)
     template<typename Fn>
     void visitSym(Fn f, Node* root) {
         if (root != nullptr) {
@@ -659,6 +696,7 @@ public:
     //          en parametre. Pour le noeud n courrant, l'appel sera
     //          f(n->key);
     //
+    // @remark O(n)
     template<typename Fn>
     void visitPost(Fn f) {
         //Appele de la fonction récursive
@@ -675,6 +713,7 @@ private :
     //          f(n->key);
     // @param root  La racine de sous arbre actuelle
     //
+    // @remark O(n)
     template<typename Fn>
     void visitPost(Fn f, Node* root) {
         if (root != nullptr) {
